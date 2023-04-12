@@ -1,55 +1,41 @@
-const fs = require("fs.promises");
+const fs = require('fs/promises')
 
 const myFileWriter = async (fileName, fileContent) => {
-  // write code here
   try {
-    await fs.writeFile(fileName, fileContent);
-    console.log(`${fileName} - ${fileContent}`);
+    await fs.writeFile(fileName, fileContent)
+    console.log(`File ${fileName} has been created.`)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
+}
 
-  // dont chnage function name
-};
 const myFileReader = async (fileName) => {
   try {
-    const data = await fs.readFile(fileName, "utf-8");
-    console.log("---" + data);
-    return data;
+    const fileContent = await fs.readFile(fileName, 'utf-8')
+    console.log(`File ${fileName} has been read.`)
+    return fileContent
   } catch (err) {
-    console.error(err);
-    return null;
+    console.error(err)
   }
-};
+}
 
 const myFileUpdater = async (fileName, fileContent) => {
-  // write code here
-  await fs.appendFile(fileName, fileContent, (err) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log(`${fileName} --${fileContent}`);
-  });
-  // dont chnage function name
-};
+  try {
+    const existingContent = await myFileReader(fileName)
+    await fs.writeFile(fileName, existingContent + fileContent)
+    console.log(`File ${fileName} has been updated.`)
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 const myFileDeleter = async (fileName) => {
   try {
-    await fs.unlink(fileName);
-    console.log(fileName + " has been deleted");
+    await fs.unlink(fileName)
+    console.log(`File ${fileName} has been deleted.`)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-};
-const fileName = "File.txt";
-const fileContent = "Hello";
-const updateContent = " World";
+}
 
-myFileWriter(fileName, fileContent);
-myFileReader(fileName);
-myFileUpdater(fileName, updateContent);
-myFileReader(fileName);
-myFileDeleter(fileName);
-
-module.exports = { myFileWriter, myFileUpdater, myFileReader, myFileDeleter };
+module.exports = { myFileWriter, myFileUpdater, myFileReader, myFileDeleter }
